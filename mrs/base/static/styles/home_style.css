@@ -1,0 +1,37 @@
+
+      /* Custom CSS */
+      body {
+        position: relative;
+        overflow-x: hidden; /* Hide horizontal scrollbar */
+        color: #fff;
+        font-weight: bold;
+        font-size: large;
+        background: url(../images/image.jpg);
+        filter: blur(5px);
+filter: brightness(0.4);
+filter: contrast(200%);
+filter: drop-shadow(16px 16px 20px blue);
+filter: grayscale(50%);
+filter: hue-rotate(90deg);
+filter: invert(75%);
+filter: opacity(25%);
+filter: saturate(30%);
+filter: sepia(60%);
+      }
+
+      .jumbotron {
+        background-color: rgba(0, 0, 0, 0.5);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn1 {
+        background-color: #ff5722;
+        border-color: #ff5722;
+      }
+
+      .btn1:hover {
+        background-color: #f4511e;
+        border-color: #f4511e;
+      }
+ 
