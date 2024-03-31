@@ -12,6 +12,8 @@ from django.contrib.auth.decorators import login_required
 
 def home(request):
     return render(request, 'home_page.html')
+
+@login_required(login_url='login_page')
 def mrs_home(request):
     return render(request, 'mrs_home.html')
 
