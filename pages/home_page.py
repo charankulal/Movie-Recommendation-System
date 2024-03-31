@@ -2,28 +2,40 @@ import streamlit as st
 import pickle
 import requests
 
+
 # Define your existing functions here, e.g., recommend, fetch_poster
-st.set_page_config(page_title="Movie Recommendation System", layout="wide", initial_sidebar_state="collapsed")
+
 st.markdown(
     """
 <style>
     [data-testid="collapsedControl"] {
         display: none
     }
+    [data-testid="stSidebarContent"] {
+        display: none
+    }
+    [data-testid="stSidebar"] {
+        display: none
+    }
 </style>
 """,unsafe_allow_html=True,)
+
+
 def home():
    
 
     conn = st.connection('mysql', type='sql')
 
     # Perform query.
-    df = conn.query('SELECT * from users;', ttl=600)
+    # query = f"SELECT * FROM users WHERE email = '{email}' ;"
+    # df = conn.query(query, ttl=600)
+    
+    # st.write()
 
-    for row in df.itertuples():
-        st.write(f"{row.name} {row.email}")
+ 
+        
     st.header("Movies Recommendation System")
-
+    
 
     def fetch_poster(movie_id):
         url = "https://api.themoviedb.org/3/movie/{}?api_key=8265bd1679663a7ea12ac168da84d2e8&language=en-US".format(movie_id)
@@ -52,10 +64,18 @@ def home():
     movie_list= movies['title'].values
 
     selected_movie=st.selectbox('Search for a movie', movie_list)
+    
+    col1, col2 = st.columns([2, 1])  # Adjust column widths as needed
 
+    show_button = col1.button('Show recommendation')  # Use col1 for the button
 
+    
 
-    if st.button('Show recommendation'):
+    url = 'http://localhost:8501/login_page'
+    col2.markdown(f'''
+    <a href="{url}" target="_self"><button style="background-color:white;color:black">Back</button></a>
+    ''', unsafe_allow_html=True)  # Use col2 for the button
+    if show_button:
         recommended_movies_name, recommended_movies_poster=recommend(selected_movie)
         for i in range(0,10):
             st.markdown("{0}. {1}".format(i+1,recommended_movies_name[i]))

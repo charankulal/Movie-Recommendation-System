@@ -1,6 +1,21 @@
 import streamlit as st
 from sqlalchemy import create_engine, text
 
+st.markdown(
+    """
+<style>
+    [data-testid="collapsedControl"] {
+        display: none
+    }
+    [data-testid="stSidebarContent"] {
+        display: none
+    }
+    [data-testid="stSidebar"] {
+        display: none
+    }
+</style>
+""",unsafe_allow_html=True,)
+
 def register():
     st.title("Register")
     
@@ -8,8 +23,15 @@ def register():
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
     confirm_password = st.text_input("Confirm Password", type="password")
+    register_button_clicked = st.button("Register")
+    url = 'http://localhost:8501/login_page'
 
-    if st.button("Register"):
+    st.markdown(f'''
+    <a href={url} target="_self"><button style="background-color:white;color:black">Already Registered?? Login</button></a>
+    ''',
+    unsafe_allow_html=True)
+
+    if register_button_clicked:
         if password != confirm_password:
             st.error("Passwords do not match.")
         else:
@@ -29,6 +51,8 @@ def register():
             finally:
                 # Close the database connection
                 conn.close()
+                
+            
 
 if __name__ == "__main__":
     register()
