@@ -6,4 +6,4 @@ class User(AbstractUser):
     email=models.EmailField(null=True,unique=True)
     recent_liked=models.TextField(null=True)
     USERNAME_FIELD='email'
-    REQUIRED_FIELDS=['username']
+    REQUIRED_FIELDS=[]
