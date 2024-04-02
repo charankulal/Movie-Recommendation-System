@@ -1,31 +1,79 @@
 import streamlit as st
 import pickle
 import requests
+from sqlalchemy import create_engine, text
+from pages import globals 
+from pages.login_page import login
 
 
 # Define your existing functions here, e.g., recommend, fetch_poster
 
-st.markdown(
-    """
-<style>
-    [data-testid="collapsedControl"] {
-        display: none
-    }
-    [data-testid="stSidebarContent"] {
-        display: none
-    }
-    [data-testid="stSidebar"] {
-        display: none
-    }
-</style>
-""",unsafe_allow_html=True,)
 
 
 def home():
+
+
+    st.markdown(
+        """
+    <style>
+        [data-testid="collapsedControl"] {
+            display: none
+        }
+        [data-testid="stSidebarContent"] {
+            display: none
+        }
+        [data-testid="stSidebar"] {
+            display: none
+        }
+    </style>
+    """,unsafe_allow_html=True,)
+    st.markdown(
+    """
+    <style>
+        
+        .btn {
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: 5px;
+            font-weight: bold;
+            padding: 10px 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            
+        }
+        .btn:hover {
+            background-color: #008080;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .btn1 {
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: 5px;
+            font-weight: bold;
+            padding: 10px 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            
+        }
+        .btn1:hover {
+            background-color: #008080;
+            color: #ffffff;
+            text-decoration: none;
+        }
+    </style>
+    """, unsafe_allow_html=True
+)
    
 
+    user=globals.get_user()
     conn = st.connection('mysql', type='sql')
 
+        # Perform query
+    query = f"SELECT * FROM users WHERE email = '{user}';"
+    df = conn.query(query, ttl=600)
+    name=df.iloc[0][0]
+    
     # Perform query.
     # query = f"SELECT * FROM users WHERE email = '{email}' ;"
     # df = conn.query(query, ttl=600)
@@ -34,7 +82,7 @@ def home():
 
  
         
-    st.header("Movies Recommendation System")
+    st.header("Welcome "+name+" to Movies Recommendation System")
     
 
     def fetch_poster(movie_id):
@@ -65,19 +113,46 @@ def home():
 
     selected_movie=st.selectbox('Search for a movie', movie_list)
     
-    col1, col2 = st.columns([2, 1])  # Adjust column widths as needed
+    col1, col2,col3 = st.columns([2, 1,3])  # Adjust column widths as needed
 
     show_button = col1.button('Show recommendation')  # Use col1 for the button
 
     
 
     url = 'http://localhost:8501/login_page'
-    col2.markdown(f'''
-    <a href="{url}" target="_self"><button style="background-color:white;color:black">Back</button></a>
-    ''', unsafe_allow_html=True)  # Use col2 for the button
+    col2.markdown(f"""
+                        
+                                <a href="http://localhost:8501/login_page" target='_self' class="btn">Back</a>
+                        
+                        """, unsafe_allow_html=True, )  # Use col2 for the button
+    
+    url = 'http://localhost:8501/previous_recommended'
+    with col3:
+        st.markdown(
+                    """
+                        
+                                <a href="http://localhost:8501/previous_recommended" target='_self' class="btn1">Check Recently Recommended Movies</a>
+                        
+                        """, unsafe_allow_html=True
+                )
     if show_button:
+        engine = create_engine('mysql://root:Charan@localhost/mrs_user')
+        # conn = st.connection('mysql', type='sql')
+        conn = engine.connect()
+        user = globals.get_user()
+        # Perform query to insert user data
+        # query = text(f"UPDATE users SET recently_liked='{selected_movie}' where email='{user}'; ")
+        # conn.execute(query)
+        query = text("UPDATE users SET recently_liked=:selected_movie WHERE email=:user")
+        conn.execute(query, {"selected_movie": selected_movie, "user": user})
+        conn.commit()
+        
+        globals.set_selected_movie(selected_movie)
         recommended_movies_name, recommended_movies_poster=recommend(selected_movie)
         for i in range(0,10):
             st.markdown("{0}. {1}".format(i+1,recommended_movies_name[i]))
 if __name__ == "__main__":
-    home()
+    if globals.get_user()==None:
+        login()
+    else:
+        home()

@@ -15,6 +15,32 @@ st.markdown(
     }
 </style>
 """,unsafe_allow_html=True,)
+st.markdown(
+    """
+    <style>
+        
+        .btn {
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: 5px;
+            font-weight: bold;
+            padding: 10px 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-left:220px;
+        }
+        .btn:hover {
+            background-color: #008080;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+    </style>
+    """, unsafe_allow_html=True
+    )
+
+   
+
 
 def register():
     st.title("Register")
@@ -26,10 +52,13 @@ def register():
     register_button_clicked = st.button("Register")
     url = 'http://localhost:8501/login_page'
 
-    st.markdown(f'''
-    <a href={url} target="_self"><button style="background-color:white;color:black">Already Registered?? Login</button></a>
-    ''',
-    unsafe_allow_html=True)
+    st.markdown(
+        """
+            
+                    <a href="http://localhost:8501/login_page" target='_self' class="btn">Already registered? Login!!</a>
+            
+            """, unsafe_allow_html=True
+    )
 
     if register_button_clicked:
         if password != confirm_password:
