@@ -20,7 +20,7 @@ st.markdown(
     <style>
         
         .btn {
-            background-color: #ffffff;
+            background-color: #00ffff;
             color: #000000;
             border-radius: 5px;
             font-weight: bold;

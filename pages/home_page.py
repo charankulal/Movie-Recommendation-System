@@ -32,11 +32,12 @@ def home():
     <style>
         
         .btn {
-            background-color: #ffffff;
+            background-color: #00f0f0;
             color: #000000;
             border-radius: 5px;
             font-weight: bold;
-            padding: 10px 20px;
+            padding: 10px 5pt;
+            margin-top:20px;
             text-decoration: none;
             transition: all 0.3s ease;
             
@@ -47,11 +48,12 @@ def home():
             text-decoration: none;
         }
         .btn1 {
-            background-color: #ffffff;
-            color: #000000;
+            background-color: #00f0f0;
+            color: #ffffff;
             border-radius: 5px;
             font-weight: bold;
-            padding: 10px 20px;
+            padding: 10px 5pt ;
+            margin-top:5pt;
             text-decoration: none;
             transition: all 0.3s ease;
             
@@ -80,7 +82,7 @@ def home():
     
     # st.write()
 
- 
+    col1, col2,col3 = st.columns([2, 3,4])
         
     st.header("Welcome "+name+" to Movies Recommendation System")
     
@@ -112,15 +114,16 @@ def home():
     movie_list= movies['title'].values
 
     selected_movie=st.selectbox('Search for a movie', movie_list)
+    st.empty()
     
-    col1, col2,col3 = st.columns([2, 1,3])  # Adjust column widths as needed
+      # Adjust column widths as needed
 
-    show_button = col1.button('Show recommendation')  # Use col1 for the button
+    show_button = st.button('Show recommendation')  # Use col1 for the button
 
     
 
     url = 'http://localhost:8501/login_page'
-    col2.markdown(f"""
+    col1.markdown(f"""
                         
                                 <a href="http://localhost:8501/login_page" target='_self' class="btn">Back</a>
                         
