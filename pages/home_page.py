@@ -82,7 +82,7 @@ def home():
     
     # st.write()
 
-    col1, col2,col3 = st.columns([2, 3,4])
+    col1, col2,col3 = st.columns([2, 1,5])
         
     st.header("Welcome "+name+" to Movies Recommendation System")
     
